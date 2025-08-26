@@ -29,4 +29,7 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
         restart: unless-stopped
     ```
     * Just update the path_to_appdata field
+    * Copy this to file named docker-compose.yml then save it.
+    * Run docker compose up -d (in the same folder as the compose file).
+    * Then go to you browser the hit [http://localhost:6052](http://localhost:6052) for another device get the IP address of the system          running docker (IP_ADD:6052)
 3.  (Optional) [HomeAssitant](https://www.home-assistant.io/) installation various ways but for this setup we will be using Container based setup inside Docker
