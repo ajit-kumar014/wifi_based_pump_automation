@@ -13,7 +13,7 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
 1.  Docker installed on the system
     If not installed you can checkout [Docker installation guide](https://docs.docker.com/engine/install/)
 2.  [Esphome](https://esphome.io) installed on docker:
-    `services:
+    ```services:
        esphome:
         image: ghcr.io/imagegenius/esphome:latest
         container_name: esphome
@@ -26,6 +26,7 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
           - path_to_appdata:/config
         ports:
           - 6052:6052
-        restart: unless-stopped`
+        restart: unless-stopped
+    ```
     * Just update the path_to_appdata field
 3.  (Optional) [HomeAssitant](https://www.home-assistant.io/) installation various ways but for this setup we will be using Container based setup inside Docker
