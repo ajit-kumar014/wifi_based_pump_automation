@@ -12,4 +12,4 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
 ## Setup Required before dealing with Hardware
 1.  Docker installed on the system
     If not installed you can checkout [Docker installation guide](https://docs.docker.com/engine/install/)
-2.  [Esphome](esphome.io) installed on docker
+2.  [Esphome](https://esphome.io) installed on docker
