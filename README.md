@@ -264,7 +264,7 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
 8.  Please take Help of Electrician for this DO NOT TRY THIS ON YOUR OWN!!!.
 9.  Now setting up the WaterProof sensor and another ESP module for sending the tank data to the relay ESP module.
 10.  Follow the same steps for ESP module configuration.
-11.  .yaml file :
+11.  .yaml file , Go throught he yaml file and configure based on your requirements(Things need to changed for individual):
         ```
         esphome:
       name: nodemcu-water-level
@@ -585,8 +585,69 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
                   format: "Water Level: %.2fm (%.1f%%) - Status: %s - Pump: %s"
                   args: [ 'id(water_level).state', 'id(water_level_percentage).state', 'id(water_level_status).state.c_str()', 'id(pump_state) ? "ON" : "OFF"' ] 
         ```
-11.     Save it then Install using the Plug into this Computer option.
-12.     wait for installation.
-13.     The go to the IP_address present in the manual_ip section in .yaml file
-14. 
-        
+11.  Save it then Install using the Plug into this Computer option.
+12.  wait for installation.
+13.  The go to the IP_address present in the manual_ip section in .yaml file
+14.  GPIO connection:
+     ```
+             +--------------------+          +-------------------+
+            |   NodeMCU ESP8266  |          |   Ultrasonic      |
+            |                    |          |   (HC-SR04)       |
+            | D5 (GPIO14) ------> Trigger   |                   |
+            | D6 (GPIO12) <------ Echo -----|                   |
+            | 3.3V/5V ----------> VCC       |                   |
+            | GND --------------> GND       |                   |
+            +--------------------+          +-------------------+
+    
+            +--------------------+
+            |   SSR Relay        |
+            | IN  <--- D2 (GPIO4)|
+            | VCC <--- 3.3V/5V   |
+            | GND <--- GND       |
+            | AC Load --> Pump   |
+            +--------------------+
+     ```
+## 🔹 Things That Vary Person to Person
+
+Each installation can differ. You need to adjust the following parameters:
+
+---
+
+### 1. Tank Dimensions & Sensor Mounting
+- **`tank_height`** → Actual tank height (m).  
+- **`sensor_offset`** → Distance from tank top to sensor (m).  
+- **`max_water_height`** → Effective usable water depth (`tank_height – offset`).  
+
+📌 Example: If **tank = 2m tall**, sensor mounted **20cm from top** → `offset = 0.2m`.
+
+---
+
+### 2. Tank Shape for Volume Calculation
+- **Cylindrical tank** → `π × r² × h`  
+- **Rectangular tank** → `length × width × height`  
+
+👉 You must modify the **volume formula** in YAML depending on your tank.
+
+---
+
+### 3. Control Thresholds (Pump Logic)
+Currently set to:
+- Turn pump **ON** at ≤ **30%** water level.  
+- Turn pump **OFF** at ≥ **80%** water level.  
+
+⚡ These values should be tuned based on your **tank capacity** and **water usage**.
+
+---
+
+### 4. Relay Wiring
+- Some people use **NO (Normally Open)**, others **NC (Normally Closed)** relay terminals (depending on safety preference).  
+- **AC load wiring** must be adapted to **local household electrical standards**.
+
+---
+
+### 5. Network / HTTP Control
+- Your config sends HTTP requests to:  
+  `http://192.168.0.101/switch/ssr_relay/...`  
+- This **IP address will vary** depending on your **Home Assistant / ESPHome setup**.  
+- If you flash the relay directly on the **same ESP**, you don’t need HTTP — you can call the **relay ID** directly.
+
