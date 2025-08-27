@@ -9,7 +9,11 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
 4.  Battery 5V
 
 # Images From my setup.
-![Dashboard](photos/1.jpeg "Dashboard View")
+<p align="center">
+  <img src="photos/1.jpeg" alt="Dashboard" width="300"/>
+  <img src="photos/2.jpeg" alt="Terminal" width="300"/>
+  <img src="photos/3.jpeg" alt="Server Logs" width="300"/>
+</p>
 
 
 ## Setup Required before dealing with Hardware
