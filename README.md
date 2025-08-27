@@ -13,6 +13,11 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
   <img src="photos/1.jpeg" alt="Dashboard" width="300"/>
   <img src="photos/2.jpeg" alt="Terminal" width="300"/>
   <img src="photos/3.jpeg" alt="Server Logs" width="300"/>
+   <img src="photos/4.jpeg" alt="Server Logs" width="300"/>
+   <img src="photos/5.png" alt="Server Logs" width="300"/>
+   <img src="photos/6.png" alt="Server Logs" width="300"/>
+   <img src="photos/7.png" alt="Server Logs" width="300"/>
+   <img src="photos/8.png" alt="Server Logs" width="300"/>
 </p>
 
 
