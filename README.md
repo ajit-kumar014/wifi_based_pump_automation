@@ -59,5 +59,179 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
      * Keep in mind the volumes files must be present.
      * After that run `docker compose up -d` in terminal
      * Then go inside the browser and hit `localhost:8123` and go ahead and do the setup and explore.
+## Steps for Hardware setup.
+1.  Plug in your ESP module to system, then go to EspHome url.
+2.  Click on the secrets option on top right corner, then paste this:
+    ```
+    # Your Wi-Fi SSID and password
+    wifi_ssid: "YOUR_WIFI_NAME_HERE"
+    wifi_password: "YOUR_WIFI_PASSWORD_HERE"
+    # this is optional
+    api_key: "YOUR_HOMEASSISTANT_API_FOR_ADDING_SUPPORT_FOR_HOMEASSITANT"
+    ```
+    then save.
+3.  Go back then select " + New device ".
+4.  Fill the name that you want to give then select the appropriate board name then save.
+5.  Open the .yaml that got created with the same name as provided.
+6.  Make changes in this accordingly:
+    ```
+    esphome:
+      name: relay
+      friendly_name: relay
+    
+    esp8266:
+      board: nodemcuv2
+    
+    # Enable logging
+    logger:
+      level: DEBUG
+    
+    # Enable Home Assistant API
+    api:
+      encryption:
+        key: "YOUR_HOMEASSITANT_API_KEY"
+    
+    ota:
+      - platform: esphome
+        password: "dbddea81b8ffd0267fe9d781f42c625b"
+    
+    wifi:
+      ssid: !secret wifi_ssid
+      password: !secret wifi_password
+      manual_ip:
+        static_ip: 192.168.0.101
+        gateway: 192.168.0.1
+        subnet: 255.255.255.0
+      
+      # Enable fallback hotspot (captive portal) in case wifi connection fails
+      ap:
+        ssid: "Relay Fallback Hotspot"
+        password: "gXBx50azyVMz"
+    
+    # Add web server for debugging and API access
+    web_server:
+      port: 80
+    
+    captive_portal:
+    
+    # Status LED
+    status_led:
+      pin:
+        number: D4
+        inverted: true
+    
+    # SSR Relay Switch
+    switch:
+      - platform: gpio
+        pin: D2
+        name: "SSR Relay"
+        id: ssr_relay
+        restore_mode: RESTORE_DEFAULT_OFF
+        on_turn_on:
+          then:
+            - logger.log: "Pump turned ON by water level control"
+            - globals.set:
+                id: relay_state
+                value: 'true'
+        on_turn_off:
+          then:
+            - logger.log: "Pump turned OFF by water level control"
+            - globals.set:
+                id: relay_state
+                value: 'false'
+    
+      # Manual override switch (for testing/emergency)
+      - platform: template
+        name: "Manual Override"
+        id: manual_override
+        restore_mode: RESTORE_DEFAULT_OFF
+        turn_on_action:
+          - logger.log: "Manual override enabled - pump control disabled"
+          - globals.set:
+              id: manual_mode
+              value: 'true'
+        turn_off_action:
+          - logger.log: "Manual override disabled - automatic control resumed"
+          - globals.set:
+              id: manual_mode
+              value: 'false'
+    
+      # Restart switch
+      - platform: restart
+        name: "Restart"
+    
+    # Global variables
+    globals:
+      - id: relay_state
+        type: bool
+        restore_value: true
+        initial_value: 'false'
+      - id: manual_mode
+        type: bool
+        restore_value: true
+        initial_value: 'false'
+    
+    # Binary sensors
+    binary_sensor:
+      - platform: status
+        name: "Status"
+      
+      # Template sensor to show if relay is controlled automatically
+      - platform: template
+        name: "Auto Control Active"
+        id: auto_control_active
+        lambda: |-
+          return !id(manual_mode);
+    
+    # Text sensors
+    text_sensor:
+      - platform: template
+        name: "Relay Status"
+        id: relay_status
+        lambda: |-
+          if (id(manual_mode)) {
+            return {"Manual Mode"};
+          } else if (id(relay_state)) {
+            return {"Auto - Pump ON"};
+          } else {
+            return {"Auto - Pump OFF"};
+          }
+        update_interval: 5s
+    
+      # Device info
+      - platform: version
+        name: "ESPHome Version"
+        hide_timestamp: true
+    
+      # WiFi Info
+      - platform: wifi_info
+        ip_address:
+          name: "IP Address"
+        ssid:
+          name: "Connected SSID"
+    
+    # Sensors
+    sensor:
+      # WiFi Signal
+      - platform: wifi_signal
+        name: "WiFi Signal"
+        update_interval: 60s
+    
+      # Uptime
+      - platform: uptime
+        name: "Uptime"
+        filters:
+          - lambda: return x / 3600;  # Convert to hours
+        unit_of_measurement: "h"
+        accuracy_decimals: 1
+    
+    # Interval for status logging
+    interval:
+      - interval: 60s
+        then:
+          - logger.log: 
+              format: "Relay Status: %s - Manual Mode: %s"
+              args: [ 'id(relay_state) ? "ON" : "OFF"', 'id(manual_mode) ? "ENABLED" : "DISABLED"' ]
+    ```
 
-     
+    
