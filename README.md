@@ -71,9 +71,9 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
     ```
     then save.
 3.  Go back then select " + New device ".
-4.  Fill the name that you want to give then select the appropriate board name then save.
+4.  Fill the name(This code below if for relay control, basically on/off control) that you want to give then select the appropriate board name then save.
 5.  Open the .yaml that got created with the same name as provided.
-6.  Make changes in this accordingly:
+6.  Make changes in this accordingly then paste it( keep in mind the GPIO pin connection for esp module and relay):
     ```
     esphome:
       name: relay
@@ -233,5 +233,36 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
               format: "Relay Status: %s - Manual Mode: %s"
               args: [ 'id(relay_state) ? "ON" : "OFF"', 'id(manual_mode) ? "ENABLED" : "DISABLED"' ]
     ```
+    * Then Click install, then select 'Plug into this computer' option then wait for it to get installed.
+    * After that Unplug then go with the wiring process.
+    * GPIO Pins for ESP Module is:
+    ```
+     ┌───────────────┐
+     │   NodeMCU     │
+     │ (ESP8266)     │
+     │               │
+     │  D4 (GPIO2) ──> Onboard LED (Status)  
+     │               │
+     │  D2 (GPIO4) ──> SSR Relay (Control Pin)  
+     │               │
+     │  GND ─────────> SSR Relay GND  
+     │  3V3/5V ──────> SSR Relay VCC (depends on relay type)  
+     │               │
+     └───────────────┘ 
+    
+     ┌───────────────┐
+     │   SSR Relay   │
+     │               │
+     │ Input: VCC, GND, IN (from D2)  
+     │ Output: AC Live (Pump control)  
+     │               │
+     └───────────────┘
+    ```
+    * for more details [Checkout this video on Youtube](https://youtu.be/DZrOOhRCtZM) but instead of Arduino we are using the espboard.
+    * Try to test is out using LEDs or any mobile charger by going to the webpage present at manual_ip(if not showing then check out your network subnet the change the .yaml file          then retry again).
+7.  Then make the connection with the motor (I would recommend to create a separate Socket board for that purpose with an MCB as a safety measure)
+8.  Please take Help of Electrician for this DO NOT TRY THIS ON YOUR OWN!!!.
+9.  Now setting up the WaterProof sensor and another ESP module for sending the tank data to the relay ESP module.
+10.  
 
     
