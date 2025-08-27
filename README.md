@@ -585,4 +585,8 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
                   format: "Water Level: %.2fm (%.1f%%) - Status: %s - Pump: %s"
                   args: [ 'id(water_level).state', 'id(water_level_percentage).state', 'id(water_level_status).state.c_str()', 'id(pump_state) ? "ON" : "OFF"' ] 
         ```
+11.     Save it then Install using the Plug into this Computer option.
+12.     wait for installation.
+13.     The go to the IP_address present in the manual_ip section in .yaml file
+14. 
         
