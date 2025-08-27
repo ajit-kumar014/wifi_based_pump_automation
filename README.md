@@ -3,9 +3,9 @@ Turn your ordinary water pump into a smart, Wi-Fi powered system! Using ESP8266,
 
 
 ## Things Required.
-1.  ESP8266 (NodeMCU/Lonin) 2 in Quantity
-2.  Water-Proof Ultrasonic Sensor
-3.  Solid State Relay(SSR-40DA)
+1.  [ESP8266 (NodeMCU/Lonin)](https://robocraze.com/products/lolin-nodemcu-esp8266-wifi-module) 2 in Quantity
+2.  [Water-Proof Ultrasonic Sensor](https://robocraze.com/products/waterproof-ultrasonic-sensor?variant=40193420558489)
+3.  [Solid State Relay(SSR-40DA)](https://robocraze.com/products/fotek-24v-380v-40amp-250v-ssr-40-da-solid-state-relay-module)
 4.  Battery 5V
 
 # Images From my setup.
